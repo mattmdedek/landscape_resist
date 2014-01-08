@@ -42,7 +42,8 @@ Array Distance Files:
     configuration files.
 3.  The individual distance files conform to the following naming
     convention:
-    * *FieldSiteID* _ *metric* _ *type* _ *cost*[ _resistances_3columns].txt
+
+    * FieldSiteID_DistanceMetric_MetricSubtype_Cost[_resistances_3columns].txt
 
 
 
