@@ -13,10 +13,12 @@ Circuitscape.
 Configuration Files:
 --------------------
 
-1.  Raw data is stored in the data directory with one sub directory 
-    per field site.
+1.  Site distance data is stored in the data directory with one sub
+    directory per field site.
 
-2.  A mapping file is required to map collections to collection arrays and
+2.  Genetic distance data is stored by species
+
+3.  A mapping file is required to map collections to collection arrays and
     field sites. This mapping file is stored in data/sample_arrays.txt.
     data/sample_arrays.txt is tab-delimited with three columns:
 
@@ -25,7 +27,7 @@ Configuration Files:
       directories of data/sites
     * Column 3: ArrayID - The collection array identifier
 
-3. When generating Circuitscape data, each position (corresponding to a 
+4. When generating Circuitscape data, each position (corresponding to a 
    collection array in this context) is assigned a numeric ID. We need to
    map the numeric ID to the FieldSiteID.
 
