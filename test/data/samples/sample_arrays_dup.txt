@@ -1,0 +1,4 @@
+SampleID	FieldSiteID	ArrayID
+TestSample1	TestSite1	TestArray1
+TestSample1	TestSite2	TestArray2
+

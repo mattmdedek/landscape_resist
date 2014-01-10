@@ -86,6 +86,37 @@ class TestLsrDataModuleFunctions(unittest.TestCase):
           )
         )
 
+    def test_sample_arrays_to_dict(self):
+        test_ret = ( {
+                    "TestSample1": {
+                        "SampleID": "TestSample1",
+                        "FieldSiteID": "TestSite1",
+                        "ArrayID": "TestArray1"
+                    },
+                    "TestSample2": {
+                        "SampleID": "TestSample2",
+                        "FieldSiteID": "TestSite2",
+                        "ArrayID": "TestArray2"
+                    }
+                  } )
+        self.assertEqual(
+                lsrdata.sample_arrays_to_dict("data/samples/sample_arrays_ok.txt"),
+                test_ret
+                )
+
+        self.assertEqual(
+                lsrdata.sample_arrays_to_dict("data/samples/sample_arrays_no_head.txt"),
+                test_ret
+                )
+
+        self.assertRaises(lsrdata.ConfigFileMissingError,
+                lsrdata.sample_arrays_to_dict,
+                "data/samples/not_a_file.txt")
+
+        self.assertRaises(lsrdata.DuplicateConfigKeyError,
+                lsrdata.sample_arrays_to_dict,
+                "data/samples/sample_arrays_dup.txt")
+
 if __name__=='__main__':
     unittest.main()
 
