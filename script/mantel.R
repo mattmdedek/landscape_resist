@@ -1,6 +1,8 @@
-# Saw errors when upgrading R, then installing vegan without upgrading lattice
+# TO-DO: figure out how to recover from missing vegan gracefully...
+# These commands install it:
+# Install/update dependancy lattice
 # install.package("lattice")
-# Install the vegan package, this should be conditional
+# Install the vegan package
 # install.packages("vegan")
 
 # vegan... we has it
@@ -23,19 +25,27 @@ if (length(args) < 3) {
 }
 
 # read files into strings
+# size is the number of characters in the file
 geneDistTxt <- readChar(geneDistPath, file.info(geneDistPath)$size)
 physDistTxt <- readChar(physDistPath, file.info(physDistPath)$size)
 resistTxt <- readChar(resistPath, file.info(resistPath)$size)
 
 # read strings into matrices
-# matrices must be diagonal (done with the fill function) and you tell it # of columns
-slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, col.names=paste("V", 2:71)))
+# matrices must be diagonal (use fill=T to make table 'square')
+# Need to see if col.names paste is necessary... The effect is to 
+# name the colums of the table as V.2 vs 
+# slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, col.names=paste("V", 2:71)))
+# Assumes tab-delimited data with column and row headers, loads data table, converts to matrix
+slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, sep="\t", header=T))
+# remove the row headers
+slopedmat <- slopedMat[-1]
 
 # convert diagonal matrices to symetric matrices
 slopedmat[upper.tri(slopedmat)] <- t(slopedmat)[upper.tri(slopedmat)]
 
-# converts matrices to a distance objects with as.dist
-# to-do: find the best permutations
+# convert matrices to a distance objects with as.dist
+# to-do: find the best number of permutations
 mantel(as.dist(eucdmat), as.dist(rousdmat), method="pearson", permutations=99)
+
 mantel.partial(as.dist(rousdmat), as.dist(slopedmat), as.dist(eucdmat), method="pearson", permutations=9999)
 
