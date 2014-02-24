@@ -17,11 +17,12 @@ library(vegan)
 args <- commandArgs(trailingOnly = T)
 
 if (length(args) < 3) {
-  stop('Provide three files: genetic distance, geometric distance, resistance matrix')
+  stop('Provide three files: genetic distance, geometric distance, resistance matrix, and number of permutations')
 } else {
   geneDistPath <- args[1]
   physDistPath <- args[2]
   resistPath   <- args[3]
+  perms        <- args[4]
 }
 
 # read files into strings
@@ -31,20 +32,11 @@ physDistTxt <- readChar(physDistPath, file.info(physDistPath)$size)
 resistTxt <- readChar(resistPath, file.info(resistPath)$size)
 
 # read strings into matrices
-# matrices must be diagonal (use fill=T to make table 'square')
-# Need to see if col.names paste is necessary... The effect is to 
-# name the colums of the table as V.2 vs 
-# slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, col.names=paste("V", 2:71)))
-# Assumes tab-delimited data with column and row headers, loads data table, converts to matrix
-slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, sep="\t", header=T))
-# remove the row headers
-slopedmat <- slopedMat[-1]
+# strings contained in files should already be symetric matrices with the same 
+# number of rows and columns and with the rows and columns representing the same
+# individuals
+slopedmat <- data.matrix(read.table(text=slopetxt, fill=T, sep="\t", header=F))
 
-# convert diagonal matrices to symetric matrices
-slopedmat[upper.tri(slopedmat)] <- t(slopedmat)[upper.tri(slopedmat)]
-
-# convert matrices to a distance objects with as.dist
-# to-do: find the best number of permutations
 mantel(as.dist(eucdmat), as.dist(rousdmat), method="pearson", permutations=99)
 
 mantel.partial(as.dist(rousdmat), as.dist(slopedmat), as.dist(eucdmat), method="pearson", permutations=9999)
