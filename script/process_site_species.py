@@ -15,24 +15,24 @@ if len(sys.argv) < 3:
     print "Usage: site, species"
 else:
     site = sys.argv[1].upper()
-    species = sys.argv[2]upper()
+    species = sys.argv[2].upper()
 
 # set up data locations
 out_dir = '../results/' + site + '/' + species + '/'
-in_dir = '../data/sites/' + site + '/' + species + '/'
+in_dir = '../data/sites/' + site + '/'
 sample_map = '../data/samples/sample_array.txt'
-array_map = in_dir + 'Array_ID_' + site + '.txt'
+array_map = in_dir + 'ArrayID_' + site + '.txt'
 
 # create the file tranforming object
 try:
-    sm = ls_transformers.sample_mapper(sample_map, array_map)
-except Exception e:
+    sm = ls_transforms.sample_mapper(sample_map, array_map)
+except Exception, e:
     print e
     exit()
 
 # find genetic and euclidean distance files
 gen_fp = in_dir + site.lower() + '_' + species.lower() + '_rousset.txt'
-euc_fp = in_dir + 'PairwiseEuclideanDistance_' + species.lower() + '.txt'
+euc_fp = in_dir + 'PairwiseEuclideanDistance_' + site + '.txt'
 
 # glob for a list of resistance files
 res_fps = glob.glob(in_dir + site.lower() + '*resistances_3columns')
@@ -56,11 +56,11 @@ compiled_partial = []
 
 # process euclidean and genetic distances
 gen_matrix_fp = out_dir + site.lower() + '_' + species.lower() + '_rousset.txt'
-sample_list = lt.genetic_to_matrix_file(gen_fp, gen_matrix_fp)
+sample_list = sm.genetic_to_matrix_file(gen_fp, gen_matrix_fp)
 print "Loaded genetic distance file: " + gen_fp
 
 euc_matrix_fp = out_dir + 'PairwiseEuclideanDistance_' + species.lower() + '.txt'
-lt.euclid_to_matrix_file(euc_fp, euc_matrix_fp, sample_list)
+sm.euclid_to_matrix_file(euc_fp, euc_matrix_fp, sample_list)
 print "Loaded Euclidean distance file: " + gen_fp
 
 for res_fp in res_fps:
@@ -70,5 +70,6 @@ for res_fp in res_fps:
     print "Processing resistance file: " + res_fp
     mantel_out_fp = out_dir + res_fn + "_mantel"
     partial_out_fp = out_dir + res_fn + "_partial"
-    lt.resist_to_matrix_file(res_fn, res_matrix_fp, sample_list) 
+    sm.resist_to_matrix_file(res_fp, res_matrix_fp, sample_list) 
+    
 
