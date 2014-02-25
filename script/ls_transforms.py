@@ -7,6 +7,12 @@ class sample_mapper:
         """
         Takes a sample mapping file, tab separated, containing 'Species', 'Site', 'Array' and 'Sample' headers
         """
+        if not os.path.isfile(sample_map_fp):
+            raise Exception (sample_map_fp + " is not a file")
+
+        if not os.path.isfile(array_map_fp):
+            raise Exception (array_map_fp + " is not a file")
+
         self.dict_specimen_to_site = {}
         self.dict_object_id_to_site = {}
         self.sample_map_fp = sample_map_fp
