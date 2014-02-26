@@ -19,11 +19,11 @@ library(vegan)
 args <- commandArgs(trailingOnly = T)
 
 if (length(args) < 3) {
-  stop('Provide three files: genetic distance, geometric distance, resistance matrix, and number of permutations')
+  stop('Provide two files: genetic distance, geometric distance, and number of permutations')
 } else {
   gen_dist_fp <- args[1]
   euc_dist_fp <- args[2]
-  perms       <- args[3]
+  perms       <- as.numeric(args[3])
 }
 
 # read files into strings
@@ -35,5 +35,6 @@ euc_dist_ft <- readChar(euc_dist_fp, file.info(euc_dist_fp)$size)
 gen_mat <- data.matrix(read.table(text=gen_dist_ft, fill=F, sep="\t", header=F))
 euc_mat <- data.matrix(read.table(text=euc_dist_ft, fill=F, sep="\t", header=F))
 
+# call the mantel test of the vegan library
 mantel(as.dist(euc_mat), as.dist(gen_mat), method="pearson", permutations=perms)
 

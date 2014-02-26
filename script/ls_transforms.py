@@ -1,5 +1,6 @@
-import glob
 import os
+import subprocess
+import tempfile
 
 class sample_mapper:
 
@@ -146,7 +147,7 @@ class sample_mapper:
 
         with open(fp_output, 'w') as of:
             of.write("\n".join(out_lines)) 
-        header.pop(0)
+        #header.pop(0)
         return header
 
     def euclid_to_matrix_file(self, fp_input, fp_output, sample_list):
@@ -198,4 +199,35 @@ class sample_mapper:
 
     def specimen_to_site(self, specimen):
         return self.dict_specimen_to_site[specimen]
+
+    def vegan_mantel(self, gen_fp, dist_fp, perms):
+        # create temp file objects to hold the R I/O
+        t = tempfile.TemporaryFile()
+        r_in = tempfile.TemporaryFile()
+
+        sub_ret = subprocess.call(['cat', './mantel.R'], stdout=r_in)
+        r_in.seek(0)
+
+        print gen_fp
+        print dist_fp
+        sub_ret = subprocess.call(['R', '--slave', '--args', gen_fp, dist_fp, str(perms)], stdin=r_in, stdout=t)
+        t.seek(0)
+
+        return t.readlines()
+
+    def vegan_partial_mantel(self, gen_fp, dist_fp, res_fp, perms):
+        # create temp file objects to hold the R I/O
+        t = tempfile.TemporaryFile()
+        r_in = tempfile.TemporaryFile()
+
+        sub_ret = subprocess.call(['cat', './partial_mantel.R'], stdout=r_in)
+        r_in.seek(0)
+
+        print gen_fp
+        print dist_fp
+        print res_fp
+        sub_ret = subprocess.call(['R', '--slave', '--args', gen_fp, res_fp, dist_fp, str(perms)], stdin=r_in, stdout=t)
+        t.seek(0)
+
+        return t.readlines()
 

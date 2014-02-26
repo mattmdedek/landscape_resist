@@ -63,13 +63,25 @@ euc_matrix_fp = out_dir + 'PairwiseEuclideanDistance_' + species.lower() + '.txt
 sm.euclid_to_matrix_file(euc_fp, euc_matrix_fp, sample_list)
 print "Loaded Euclidean distance file: " + gen_fp
 
+mantel_out_fp = out_dir + site + "_" + species + "_mantel"
+print "Saving Mantel output to: " + mantel_out_fp
+with open(mantel_out_fp, 'w') as mf:
+    fc = sm.vegan_mantel(gen_matrix_fp, euc_matrix_fp, 10000)
+    mf.write("".join(fc))
+
 for res_fp in res_fps:
     res_fn = os.path.basename(res_fp)
     res_matrix_fp = out_dir + res_fn
     fn_toks = res_fn.split('_')
     print "Processing resistance file: " + res_fp
-    mantel_out_fp = out_dir + res_fn + "_mantel"
     partial_out_fp = out_dir + res_fn + "_partial"
     sm.resist_to_matrix_file(res_fp, res_matrix_fp, sample_list) 
-    
+
+    print "Saving partial Mantel: " + partial_out_fp
+    print "Input genetic distance: " + gen_matrix_fp
+    print "Input euclidean distance: " + euc_matrix_fp
+    print "Input resistance matrix: " + res_matrix_fp
+    with open(partial_out_fp, 'w') as mf:
+        fc = sm.vegan_partial_mantel(gen_matrix_fp, euc_matrix_fp, res_matrix_fp, 10000)
+        mf.write("".join(fc))
 
