@@ -1,0 +1,15 @@
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = as.dist(euc_mat), ydis = as.dist(gen_mat), method = "pearson",      permutations = perms) 
+
+Mantel statistic r: 0.1227 
+      Significance: 0.00019998 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0322 0.0432 0.0525 0.0633 
+
+Based on 10000 permutations
+

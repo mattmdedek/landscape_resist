@@ -1,0 +1,15 @@
+
+Partial Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel.partial(xdis = as.dist(gen_mat), ydis = as.dist(res_mat),      zdis = as.dist(euc_mat), method = "pearson", permutations = perms) 
+
+Mantel statistic r: 0.04664 
+      Significance: 0.011599 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0268 0.0351 0.0413 0.0475 
+
+Based on 10000 permutations
+
