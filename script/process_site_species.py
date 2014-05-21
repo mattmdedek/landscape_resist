@@ -35,7 +35,8 @@ gen_fp = in_dir + site.lower() + '_' + species.lower() + '_rousset.txt'
 euc_fp = in_dir + 'PairwiseEuclideanDistance_' + site + '.txt'
 
 # glob for a list of resistance files
-res_fps = glob.glob(in_dir + site.lower() + '*resistances_3columns')
+# res_fps = glob.glob(in_dir + site.lower() + '*resistances_3columns')
+res_fps = glob.glob(in_dir + "*" + site.upper() + '*resistances_3columns')
 
 # build the output directory tree
 if not os.path.exists(out_dir):
